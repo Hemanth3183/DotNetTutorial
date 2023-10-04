@@ -4,7 +4,8 @@ using System.Linq;
 using System.Numerics;
 using HelloWorld.Models;
 using System.Data;
-using Microsoft.Data.SqlClient;            // To import models into main program.
+using Microsoft.Data.SqlClient;
+using Dapper;            // To import models into main program.
 
 namespace HelloWorld                // Highest scope element. To define properties and classes which can be used from the main program.
 {
@@ -21,39 +22,43 @@ namespace HelloWorld                // Highest scope element. To define properti
 
             string firstSQLQuery = "Select GETDATE()";
 
-            Computer myComputer = new Computer()
-            {
-                Motherboard = "Z690",
-                Cpucores = 8,
-                HasWiFi = true,
-                HasLTE = true,
-                Releasedate = DateTime.UtcNow,
-                Price = 1950.00m,
-                Videocard = ""
+            DateTime rightNow = dbConnection.QuerySingle<DateTime>(firstSQLQuery);
 
-            };
+            Console.WriteLine(rightNow);
 
-            Computer myComputer2 = new Computer()
-            {
-                Motherboard = "i5P",
-                Cpucores = 16,
-                HasWiFi = true,
-                HasLTE = true,
-                Releasedate = DateTime.UtcNow,
-                Price = 3950.00m,
-                Videocard = ""
-            };
+            // Computer myComputer = new Computer()
+            // {
+            //     Motherboard = "Z690",
+            //     Cpucores = 8,
+            //     HasWiFi = true,
+            //     HasLTE = true,
+            //     Releasedate = DateTime.UtcNow,
+            //     Price = 1950.00m,
+            //     Videocard = ""
 
-            Console.WriteLine(myComputer.Motherboard);
-            Console.WriteLine(myComputer.Cpucores);
+            // };
 
-            myComputer.Motherboard = "i3-Core";
-            myComputer.Cpucores = 4;
-            myComputer.Price = 1250.00m;
+            // Computer myComputer2 = new Computer()
+            // {
+            //     Motherboard = "i5P",
+            //     Cpucores = 16,
+            //     HasWiFi = true,
+            //     HasLTE = true,
+            //     Releasedate = DateTime.UtcNow,
+            //     Price = 3950.00m,
+            //     Videocard = ""
+            // };
 
-            Console.WriteLine(myComputer.Motherboard);
-            Console.WriteLine(myComputer.Cpucores);
-            Console.WriteLine(myComputer.Price);
+            // Console.WriteLine(myComputer.Motherboard);
+            // Console.WriteLine(myComputer.Cpucores);
+
+            // myComputer.Motherboard = "i3-Core";
+            // myComputer.Cpucores = 4;
+            // myComputer.Price = 1250.00m;
+
+            // Console.WriteLine(myComputer.Motherboard);
+            // Console.WriteLine(myComputer.Cpucores);
+            // Console.WriteLine(myComputer.Price);
 
         }
 
