@@ -20,6 +20,7 @@ namespace HelloWorld                                                         // 
         static void Main(string[] args)                                     // Main method.
         {
             DataContextDapper dapper = new DataContextDapper();
+            DataContextEF entityFramework = new DataContextEF();
 
             // string connectionString = "Server=localhost;Database=DotNetCourse;TrustServerCertificate=true;Trusted_Connection=true;";
 
@@ -29,7 +30,7 @@ namespace HelloWorld                                                         // 
 
             DateTime rightNow = dapper.LoadDataSingle<DateTime>(firstSQLQuery);
 
-            Console.WriteLine(rightNow);
+            // Console.WriteLine(rightNow);
 
             Computer myComputer = new Computer()
             {
@@ -40,7 +41,6 @@ namespace HelloWorld                                                         // 
                 Releasedate = DateTime.UtcNow,
                 Price = 1950.00m,
                 Videocard = ""
-
             };
 
             string sql = @"INSERT INTO TutorialAppschema.Computer (
@@ -51,8 +51,7 @@ namespace HelloWorld                                                         // 
                 Releasedate,
                 Price,
                 Videocard
-                ) VALUES (
-                    '"+ myComputer.Motherboard 
+                ) VALUES ( '"+ myComputer.Motherboard 
                     +"', '"+ myComputer.Cpucores 
                     +"', '" + myComputer. HasWiFi 
                     +"', '" + myComputer. HasLTE 
@@ -61,7 +60,10 @@ namespace HelloWorld                                                         // 
                     +"', '" + myComputer. Videocard 
                     +"')";
 
-            dapper.ExecuteSQL(sql);
+
+            // entityFramework.Add(myComputer);
+            // entityFramework.SaveChanges();
+            // dapper.ExecuteSQL(sql);
 
             Computer myComputer2 = new Computer()
             {
@@ -82,8 +84,7 @@ namespace HelloWorld                                                         // 
                 Releasedate,
                 Price,
                 Videocard
-            ) VALUES (
-                '"+ myComputer2.Motherboard
+            ) VALUES ( '" + myComputer2.Motherboard
                 +"', '"+ myComputer2.Cpucores
                 +"', '"+ myComputer2.HasWiFi
                 +"', '"+ myComputer2.HasLTE
@@ -92,10 +93,14 @@ namespace HelloWorld                                                         // 
                 +"', '"+ myComputer2.Videocard
                 +"')";
 
-            dapper.ExecuteSQL(sql2);
+            // entityFramework.Add(myComputer2);
+            // entityFramework.SaveChanges();
+
+            // dapper.ExecuteSQL(sql2);
 
             string sqlSelect = @"
                 SELECT
+                Computer.ComputerId,
                 Computer.Motherboard,
                 Computer.Cpucores,
                 Computer.HasWiFi,
@@ -109,15 +114,35 @@ namespace HelloWorld                                                         // 
 
             foreach (Computer eachComputer in computers)
             {
-                Console.WriteLine("'"+ myComputer.Motherboard
-                +"', '"+ myComputer.Cpucores 
-                +"', '" + myComputer. HasWiFi 
-                +"', '" + myComputer. HasLTE 
-                +"', '" + myComputer. Releasedate 
-                +"', '" + myComputer. Price 
-                +"', '" + myComputer. Videocard 
-                +"'");
+                Console.WriteLine("'"+ eachComputer.ComputerId
+                +"', '" + eachComputer.Motherboard
+                +"', '" + eachComputer.Cpucores 
+                +"', '" + eachComputer. HasWiFi 
+                +"', '" + eachComputer. HasLTE 
+                +"', '" + eachComputer. Releasedate 
+                +"', '" + eachComputer. Price 
+                +"', '" + eachComputer. Videocard 
+                );
             };
+
+            IEnumerable<Computer>? computersEF = entityFramework.Computer?.ToList<Computer>();
+
+            if (computersEF != null)
+            {
+                foreach (Computer eachComputer in computersEF)
+                {
+                    Console.WriteLine("'"+ eachComputer.ComputerId
+                    +"', '" + eachComputer.Motherboard
+                    +"', '" + eachComputer.Cpucores 
+                    +"', '" + eachComputer. HasWiFi 
+                    +"', '" + eachComputer. HasLTE 
+                    +"', '" + eachComputer. Releasedate 
+                    +"', '" + eachComputer. Price 
+                    +"', '" + eachComputer. Videocard 
+                    );
+                };
+            };
+            
 
             // Console.WriteLine(myComputer.Motherboard);
             // Console.WriteLine(myComputer.Cpucores);
